@@ -34,6 +34,9 @@ openvas-manager:
 
   service.running:
     - enable: True
+{% if salt['cmd.run']('[[ `systemctl` =~ -\.mount ]] && echo "true" == "true"') %}
+    - provider: systemd
+{% endif %}
     - require:
       - cmd: openvas-create-cert
       - cmd: openvas-nvt-sync
@@ -46,3 +49,6 @@ openvas-scanner:
 
   service.running:
     - enable: True
+{% if salt['cmd.run']('[[ `systemctl` =~ -\.mount ]] && echo "true" == "true"') %}
+    - provider: systemd
+{% endif %}
