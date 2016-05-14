@@ -38,6 +38,7 @@ openvas-manager:
     - provider: systemd
 {% endif %}
     - require:
+      - cmd: openvas-setup
       - cmd: openvas-create-cert
       - cmd: openvas-nvt-sync
       - cmd: openvas-client-cert
