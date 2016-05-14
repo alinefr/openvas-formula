@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{## Start with  defaults from defaults.sls ##}
+{% import_yaml 'openvas/defaults.yaml' as default_settings %}
+
+{##
+Setup variable using grains['os_family'] based logic, only add key:values here
+that differ from whats in defaults.yaml
+##}
+{% set os_family_map = salt['grains.filter_by']({
+        'Debian': {
+            'pkg': 'openvas',
+            'service': 'openvas',
+        },
+  }
+  , grain="os_family"
+  , merge=salt['pillar.get']('openvas:lookup'))
+%}
+{## Merge in openvas:lookup pillar ##}
+{% set openvas = salt['pillar.get'](
+        'openvas',
+        default=default_settings.openvas,
+        merge=True
+    )
+%}
