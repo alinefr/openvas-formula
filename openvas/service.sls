@@ -64,3 +64,11 @@ greenbone-security-assistant:
 {% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
+
+openvas-restart:
+  cmd.wait:
+    - name: 'openvas-stop && openvas-start'
+    - watch:
+      - file: manager-default
+      - file: scanner-default
+      - file: greenbone-default
