@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 openvas:
-  pkg: openvas
-
   manager_default:
     manager_address: '127.0.0.1'
     manager_port: 9390
-    manager_database: '/var/lib/openvas/mgr/tasks.db'
 
   scanner_default:
     scanner_address: '127.0.0.1'

@@ -9,9 +9,8 @@ Setup variable using grains['os_family'] based logic, only add key:values here
 that differ from whats in defaults.yaml
 ##}
 {% set os_family_map = salt['grains.filter_by']({
-        'Debian': {
+        'Kali': {
             'pkg': 'openvas',
-            'service': 'openvas',
         },
   }
   , grain="os_family"

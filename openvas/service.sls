@@ -27,7 +27,7 @@ openvas-client-cert:
 openvas-dbnvt-count:
   cmd.run: 
     - name: openvasmd --rebuild
-    - unless: 'test $(sqlite3 {{ openvas_dir }}mgr/tasks.db "select count(*) from nvts;") -gt 20000'
+    - unless: 'test $(sqlite3 {{ openvas.manager_default.manager_database }} "select count(*) from nvts;") -gt 20000'
 
 openvas-manager:
   pkg:
