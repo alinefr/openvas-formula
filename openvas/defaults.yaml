@@ -4,3 +4,4 @@ openvas:
   pkg: openvas
   service:
     name: openvas
+:

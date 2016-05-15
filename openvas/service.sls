@@ -2,31 +2,32 @@
 # vim: ft=sls
 
 {% from "openvas/map.jinja" import openvas with context %}
-{% set certdir = '/var/lib/openvas/CA/' %}
-{% set plugins = '/var/lib/openvas/plugins' %}
+{% set openvas_dir = '/var/lib/openvas/' %}
+{% set certdir = openvas_dir + 'CA/' %}
+{% set plugins = openvas_dir + 'plugins/' %}
 
 openvas-setup:
   cmd.run:
-    - unless: test -d /var/lib/openvas/plugins
+    - unless: "test -d {{ plugins }}"
 
 openvas-create-cert:
   cmd.run:
     - name: openvas-mkcert -q -f
-    - unless: "test -f {{ certdir }}/servercert.pem || openssl verify -CAfile {{ certdir }}/cacert.pem {{ certdir }}/servercert.pem |grep -q ^error"
+    - unless: "test -f {{ certdir }}servercert.pem || openssl verify -CAfile {{ certdir }}cacert.pem {{ certdir }}servercert.pem |grep -q ^error"
 
 openvas-nvt-sync:
   cmd.run:
-    - unless: 'test $(find /var/lib/openvas/plugins -name "*nasl" | wc -l) -gt 10'
+    - unless: 'test $(find {{ plugins }} -name "*nasl" | wc -l) -gt 10'
 
 openvas-client-cert:
   cmd.run:
     - name: openvas-mkcert-client -n -i
-    - unless: "test -f {{ certdir }}/clientcert.pem"
+    - unless: "test -f {{ certdir }}clientcert.pem"
 
 openvas-dbnvt-count:
   cmd.run: 
     - name: openvasmd --rebuild
-    - unless: 'test $(sqlite3 /var/lib/openvas/mgr/tasks.db "select count(*) from nvts;") -gt 20000'
+    - unless: 'test $(sqlite3 {{ openvas_dir }}mgr/tasks.db "select count(*) from nvts;") -gt 20000'
 
 openvas-manager:
   pkg:
@@ -34,7 +35,7 @@ openvas-manager:
 
   service.running:
     - enable: True
-{% if salt['cmd.run']('[[ `systemctl` =~ -\.mount ]] && echo "true" == "true"') %}
+{% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
     - require:
@@ -50,6 +51,16 @@ openvas-scanner:
 
   service.running:
     - enable: True
-{% if salt['cmd.run']('[[ `systemctl` =~ -\.mount ]] && echo "true" == "true"') %}
+{% if grains['init'] == "systemd" %}
+    - provider: systemd
+{% endif %}
+
+greenbone-security-assistant:
+  pkg:
+    - installed
+  
+  service.running:
+    - enable: True
+{% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
