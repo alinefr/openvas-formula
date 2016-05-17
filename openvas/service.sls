@@ -8,26 +8,10 @@
 
 openvas-setup:
   cmd.run:
-    - unless: "test -d {{ plugins }}"
-
-openvas-create-cert:
-  cmd.run:
-    - name: openvas-mkcert -q -f
-    - unless: "test -f {{ certdir }}servercert.pem || openssl verify -CAfile {{ certdir }}cacert.pem {{ certdir }}servercert.pem |grep -q ^error"
-
-openvas-nvt-sync:
-  cmd.run:
+{% if pillar['openvas']['manager_default']['manager_password'] is defined %}
+    - name: 'openvas-setup && openvasmd --user=admin --new-password={{ pillar['openvas']['manager_default']['manager_password'] }}'
+{% endif %}
     - unless: 'test $(find {{ plugins }} -name "*nasl" | wc -l) -gt 10'
-
-openvas-client-cert:
-  cmd.run:
-    - name: openvas-mkcert-client -n -i
-    - unless: "test -f {{ certdir }}clientcert.pem"
-
-openvas-dbnvt-count:
-  cmd.run: 
-    - name: openvasmd --rebuild
-    - unless: 'test $(sqlite3 {{ openvas.manager_default.manager_database }} "select count(*) from nvts;") -gt 20000'
 
 openvas-manager:
   pkg:
@@ -40,10 +24,6 @@ openvas-manager:
 {% endif %}
     - require:
       - cmd: openvas-setup
-      - cmd: openvas-create-cert
-      - cmd: openvas-nvt-sync
-      - cmd: openvas-client-cert
-      - cmd: openvas-dbnvt-count
 
 openvas-scanner:
   pkg:

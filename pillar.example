@@ -4,6 +4,7 @@ openvas:
   manager_default:
     manager_address: '127.0.0.1'
     manager_port: 9390
+    manager_password: 'secret'
 
   scanner_default:
     scanner_address: '127.0.0.1'
