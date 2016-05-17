@@ -8,8 +8,8 @@
 
 openvas-setup:
   cmd.run:
-{% if pillar['openvas']['manager_default']['manager_password'] is defined %}
-    - name: 'openvas-setup && openvasmd --user=admin --new-password={{ pillar['openvas']['manager_default']['manager_password'] }}'
+{% if openvas.manager_default.manager_password is defined %}
+    - name: 'openvas-setup && openvasmd --user=admin --new-password={{ openvas.manager_default.manager_password }}'
 {% endif %}
     - unless: 'test $(find {{ plugins }} -name "*nasl" | wc -l) -gt 10'
 
