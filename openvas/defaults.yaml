@@ -4,11 +4,15 @@ openvas:
   pkg: 'openvas'
   
 openvas_manager:
+  pkg: 'openvas-manager'
+  service: 'openvas-manager'
   address: '127.0.0.1'
   port: 9390
   database: '/var/lib/openvas/mgr/tasks.db'
 
 openvas_scanner:
+  pkg: 'openvas-scanner'
+  service: 'openvas-scanner'
   address: '127.0.0.1'
   port: 9391
 

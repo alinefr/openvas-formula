@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{% from "openvas/map.jinja" import openvas with context %}
+{% import "openvas/map.jinja" as map with context %}
 
 openvas-pkg:
 {% if grains['os'] == 'Ubuntu' %}
@@ -15,5 +15,10 @@ openvas-pkg:
 {% endif %}
 
   pkg.installed:
-    - name: {{ openvas.pkg }}
+    - pkgs: 
+      - {{ map.openvas.pkg }}
+      - {{ map.openvas_manager.pkg }}
+      - {{ map.openvas_scanner.pkg }}
+      - {{ map.greenbone.pkg }}
     - refresh: True
+
