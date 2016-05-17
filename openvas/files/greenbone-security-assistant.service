@@ -1,3 +1,0 @@
-[Service]
-ExecStart=
-ExecStart=/usr/sbin/gsad --foreground --listen={{ greenbone_default.gsa_address }} --port={{ greenbone_default.gsa_port }} --mlisten={{ manager_default.manager_address }} --mport={{ manager_default.manager_port }}

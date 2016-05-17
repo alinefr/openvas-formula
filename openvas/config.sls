@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{% from "openvas/map.jinja" import openvas with context %}
+{% from "openvas/map.jinja" import openvas, openvas_manager, openvas_scanner, greenbone with context %}
 
 manager-default:
   file.managed:
-    - name: /etc/systemd/system/openvas-manager.service.d/local.conf
+    - name: /etc/systemd/system/{{ greenbone.service }}/local.conf
     - source: salt://openvas/files/openvas-manager.service
     - makedirs: True
     - mode: 644
-    - user: root
-    - group: root
     - template: jinja
     - context:
-      manager_default: {{ openvas.manager_default }}
+      openvas_manager: {{ openvas_manager }}
+    - watch_in:
+      - service: openvas-manager
+      - service: openvas-scanner
+      - service: {{ greenbone.service }}
 
 scanner-default:
   file.managed:
@@ -21,21 +23,25 @@ scanner-default:
     - source: salt://openvas/files/openvas-scanner.service
     - makedirs: True
     - mode: 644
-    - user: root
-    - group: root
     - template: jinja
     - context:
-      scanner_default: {{ openvas.scanner_default }}
+      openvas_scanner: {{ openvas_scanner }}
+    - watch_in:
+      - service: openvas-manager
+      - service: openvas-scanner
+      - service: {{ greenbone.service }}
 
 greenbone-default:
   file.managed:
     - name: /etc/systemd/system/greenbone-security-assistant.service.d/local.conf
-    - source: salt://openvas/files/greenbone-security-assistant.service
+    - source: salt://openvas/files/greenbone.service
     - makedirs: True
     - mode: 644
-    - user: root
-    - group: root
     - template: jinja
     - context:
-      greenbone_default: {{ openvas.greenbone_default }}
-      manager_default: {{ openvas.manager_default }}
+      greenbone: {{ greenbone }}
+      openvas_manager: {{ openvas_manager }}
+    - watch_in:
+      - service: openvas-manager
+      - service: openvas-scanner
+      - service: {{ greenbone.service }}

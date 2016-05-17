@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
-openvas:
-  manager_default:
-    manager_address: '127.0.0.1'
-    manager_port: 9390
-    manager_password: 'secret'
+openvas_manager:
+  address: '127.0.0.1'
+  port: 9390
+  password: 'secret'
 
-  scanner_default:
-    scanner_address: '127.0.0.1'
-    scanner_port: 9391
+openvas_scanner:
+  address: '127.0.0.1'
+  port: 9391
 
-  greenbone_default:
-    gsa_address: '127.0.0.1'
-    gsa_port: 9392
+greenbone:
+  address: '127.0.0.1'
+  port: 9392

@@ -1,25 +1,44 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 
-{## Start with  defaults from defaults.sls ##}
-{% import_yaml 'openvas/defaults.yaml' as default_settings %}
+{% import_yaml "openvas/defaults.yaml" as default_settings %}
 
-{##
-Setup variable using grains['os_family'] based logic, only add key:values here
-that differ from whats in defaults.yaml
-##}
-{% set os_family_map = salt['grains.filter_by']({
-        'Kali': {
-            'pkg': 'openvas',
-        },
-  }
-  , grain="os_family"
-  , merge=salt['pillar.get']('openvas:lookup'))
-%}
-{## Merge in openvas:lookup pillar ##}
 {% set openvas = salt['pillar.get'](
         'openvas',
         default=default_settings.openvas,
+        merge=True
+    )
+%}
+
+{% set openvas_manager = salt['pillar.get'](
+        'openvas_manager',
+        default=default_settings.openvas_manager,
+        merge=True
+    )
+%}
+
+{% set openvas_scanner = salt['pillar.get'](
+        'openvas_scanner',
+        default=default_settings.openvas_scanner,
+        merge=True
+    )
+%}
+
+{% set os_map = salt['grains.filter_by']({
+        'Kali': {
+            'pkg': 'greenbone-security-assistant',
+            'service': 'greenbone-security-assistant'
+        },
+        'Ubuntu': {},
+        'Debian': {},
+    }
+    , merge=salt['pillar.get']('greenbone:lookup'))
+%}
+
+{% do default_settings.greenbone.update(os_map) %}
+{% set greenbone = salt['pillar.get'](
+        'greenbone',
+        default=default_settings.greenbone,
         merge=True
     )
 %}

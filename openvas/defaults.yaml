@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 openvas:
-  pkg: openvas
+  pkg: 'openvas'
+  
+openvas_manager:
+  address: '127.0.0.1'
+  port: 9390
+  database: '/var/lib/openvas/mgr/tasks.db'
 
-  manager_default:
-    manager_address: '127.0.0.1'
-    manager_port: 9390
-    manager_database: '/var/lib/openvas/mgr/tasks.db'
+openvas_scanner:
+  address: '127.0.0.1'
+  port: 9391
 
-  scanner_default:
-    scanner_address: '127.0.0.1'
-    scanner_port: 9391
-
-  greenbone_default:
-    gsa_address: '127.0.0.1'
-    gsa_port: 9392
+greenbone:
+  pkg: 'openvas-gsa'
+  service: 'openvas-gsa'
+  address: '127.0.0.1'
+  port: 9392

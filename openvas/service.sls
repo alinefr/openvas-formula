@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{% from "openvas/map.jinja" import openvas with context %}
-{% set openvas_dir = '/var/lib/openvas/' %}
-{% set certdir = openvas_dir + 'CA/' %}
-{% set plugins = openvas_dir + 'plugins/' %}
+{% from "openvas/map.jinja" import openvas_manager, greenbone with context %}
+{% set openvas_plugins = '/var/lib/openvas/plugins' %}
 
 openvas-setup:
   cmd.run:
-{% if openvas.manager_default.manager_password is defined %}
-    - name: 'openvas-setup && openvasmd --user=admin --new-password={{ openvas.manager_default.manager_password }}'
+{% if openvas_manager.password is defined %}
+    - name: 'openvas-setup && openvasmd --user=admin --new-password={{ openvas_manager.password }}'
 {% endif %}
-    - unless: 'test $(find {{ plugins }} -name "*nasl" | wc -l) -gt 10'
+    - unless: 'test $(find {{ openvas_plugins }} -name "*nasl" | wc -l) -gt 10'
 
 openvas-manager:
   pkg:
@@ -35,20 +33,13 @@ openvas-scanner:
     - provider: systemd
 {% endif %}
 
-greenbone-security-assistant:
+{{ greenbone.pkg }}:
   pkg:
     - installed
   
   service.running:
+    - name: {{ greenbone.service }}
     - enable: True
 {% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
-
-openvas-restart:
-  cmd.wait:
-    - name: 'openvas-stop && openvas-start'
-    - watch:
-      - file: manager-default
-      - file: scanner-default
-      - file: greenbone-default

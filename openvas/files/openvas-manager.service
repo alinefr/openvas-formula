@@ -1,3 +1,3 @@
 [Service]
 ExecStart=
-ExecStart=/usr/sbin/openvasmd --listen={{ manager_default.manager_address }} --port={{ manager_default.manager_port }} --database={{ manager_default.manager_database }}
+ExecStart=/usr/sbin/openvasmd --listen={{ openvas_manager.address }} --port={{ openvas_manager.port }} --database={{ openvas_manager.database }}
