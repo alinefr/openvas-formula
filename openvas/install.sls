@@ -19,6 +19,28 @@ openvas-pkg:
       - {{ map.openvas.pkg }}
       - {{ map.openvas_manager.pkg }}
       - {{ map.openvas_scanner.pkg }}
-      - {{ map.greenbone.pkg }}
+      - {{ map.openvas_gsa.pkg }}
     - refresh: True
 
+{% if grains['init'] == "systemd" %}
+manager-service:
+  file.managed:
+    - name: /lib/systemd/system/{{ map.openvas_manager.service }}.service
+    - source: salt://openvas/files/openvas-manager.service
+    - require: 
+      - pkg: openvas-pkg
+
+scanner-service:
+  file.managed:
+    - name: /lib/systemd/system/{{ map.openvas_scanner.service }}.service
+    - source: salt://openvas/files/openvas-scanner.service
+    - require:
+      - pkg: openvas-pkg
+
+gsa-service:
+  file.managed:
+    - name: /lib/systemd/system/{{ map.openvas_gsa.service }}.service
+    - source: salt://openvas/files/openvas-gsa.service
+    - require:
+      - pkg: openvas-pkg
+{% endif %}

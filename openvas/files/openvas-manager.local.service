@@ -1,0 +1,2 @@
+ExecStart=
+ExecStart=/usr/sbin/openvasmd --listen={{ openvas_manager.address }} --port={{ openvas_manager.port }} --database={{ openvas_manager.database }}

@@ -3,5 +3,5 @@
 
 include:
   - openvas.install
-  - openvas.service
   - openvas.config
+  - openvas.service

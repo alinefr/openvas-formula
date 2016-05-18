@@ -1,47 +1,47 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{% from "openvas/map.jinja" import openvas, openvas_manager, openvas_scanner, greenbone with context %}
+{% import "openvas/map.jinja" as map with context %}
 
-manager-default:
+manager-custom:
   file.managed:
-    - name: /etc/systemd/system/{{ greenbone.service }}/local.conf
-    - source: salt://openvas/files/openvas-manager.service
+    - name: /etc/systemd/system/{{ map.openvas_manager.service }}.service.d/local.conf
+    - source: salt://openvas/files/openvas-manager.local.service
     - makedirs: True
     - mode: 644
     - template: jinja
     - context:
-      openvas_manager: {{ openvas_manager }}
+      openvas_manager: {{ map.openvas_manager }}
     - watch_in:
-      - service: openvas-manager
-      - service: openvas-scanner
-      - service: {{ greenbone.service }}
+      - service: {{ map.openvas_manager.service }}
+      - service: {{ map.openvas_scanner.service }}
+      - service: {{ map.openvas_gsa.service }}
 
-scanner-default:
+scanner-custom:
   file.managed:
-    - name: /etc/systemd/system/openvas-scanner.service.d/local.conf
-    - source: salt://openvas/files/openvas-scanner.service
+    - name: /etc/systemd/system/{{ map.openvas_scanner.service }}.service.d/local.conf
+    - source: salt://openvas/files/openvas-scanner.local.service
     - makedirs: True
     - mode: 644
     - template: jinja
     - context:
-      openvas_scanner: {{ openvas_scanner }}
+      openvas_scanner: {{ map.openvas_scanner }}
     - watch_in:
-      - service: openvas-manager
-      - service: openvas-scanner
-      - service: {{ greenbone.service }}
+      - service: {{ map.openvas_manager.service }}
+      - service: {{ map.openvas_scanner.service }}
+      - service: {{ map.openvas_gsa.service }}
 
-greenbone-default:
+gsa-custom:
   file.managed:
-    - name: /etc/systemd/system/greenbone-security-assistant.service.d/local.conf
-    - source: salt://openvas/files/greenbone.service
+    - name: /etc/systemd/system/{{ map.openvas_gsa.service }}.service.d/local.conf
+    - source: salt://openvas/files/openvas-gsa.local.service
     - makedirs: True
     - mode: 644
     - template: jinja
     - context:
-      greenbone: {{ greenbone }}
-      openvas_manager: {{ openvas_manager }}
+      openvas_gsa: {{ map.openvas_gsa }}
+      openvas_manager: {{ map.openvas_manager }}
     - watch_in:
-      - service: openvas-manager
-      - service: openvas-scanner
-      - service: {{ greenbone.service }}
+      - service: {{ map.openvas_manager.service }}
+      - service: {{ map.openvas_scanner.service }}
+      - service: {{ map.openvas_gsa.service }}

@@ -26,19 +26,19 @@
 
 {% set os_map = salt['grains.filter_by']({
         'Kali': {
-            'pkg': 'greenbone-security-assistant',
-            'service': 'greenbone-security-assistant'
+            'pkg': 'openvas_gsa-security-assistant',
+            'service': 'openvas_gsa-security-assistant'
         },
         'Ubuntu': {},
         'Debian': {},
     }
-    , merge=salt['pillar.get']('greenbone:lookup'))
+    , merge=salt['pillar.get']('openvas_gsa:lookup'))
 %}
 
-{% do default_settings.greenbone.update(os_map) %}
-{% set greenbone = salt['pillar.get'](
-        'greenbone',
-        default=default_settings.greenbone,
+{% do default_settings.openvas_gsa.update(os_map) %}
+{% set openvas_gsa = salt['pillar.get'](
+        'openvas_gsa',
+        default=default_settings.openvas_gsa,
         merge=True
     )
 %}
