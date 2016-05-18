@@ -30,6 +30,9 @@ manager-service:
     - require: 
       - pkg: openvas-pkg
 
+  file.absent:
+    - name: /etc/init.d/{{ map.openvas_manager.service }}
+
 scanner-service:
   file.managed:
     - name: /lib/systemd/system/{{ map.openvas_scanner.service }}.service
@@ -37,10 +40,16 @@ scanner-service:
     - require:
       - pkg: openvas-pkg
 
+  file.absent:
+    - name: /etc/init.d/{{ map.openvas_scanner.service }}
+
 gsa-service:
   file.managed:
     - name: /lib/systemd/system/{{ map.openvas_gsa.service }}.service
     - source: salt://openvas/files/openvas-gsa.service
     - require:
       - pkg: openvas-pkg
+
+  file.absent:
+    - name: /etc/init.d/{{ map.openvas_scanner.service }}
 {% endif %}
