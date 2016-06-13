@@ -2,6 +2,9 @@
 openvas-formula
 ================
 
+### Status
+[![Build Status](https://travis-ci.org/alinefr/openvas-formula.svg?branch=master)](https://travis-ci.org/alinefr/openvas-formula)
+
 A saltstack formula for installing and configuring openvas.
 
 .. note::
