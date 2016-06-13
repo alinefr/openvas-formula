@@ -14,7 +14,7 @@ openvas-setup:
 {{ map.openvas_manager.service }}:
   service.running:
     - enable: True
-{% if grains['init'] == "Kali" %}
+{% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
     - require:
@@ -23,13 +23,13 @@ openvas-setup:
 {{ map.openvas_scanner.service }}:
   service.running:
     - enable: True
-{% if grains['os'] == "Kali" %}
+{% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
 
 {{ map.openvas_gsa.service }}:
   service.running:
     - enable: True
-{% if grains['os'] == "Kali" %}
+{% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}

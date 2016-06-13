@@ -23,33 +23,30 @@ openvas-pkg:
     - refresh: True
 
 {% if grains['init'] == "systemd" %}
-manager-service:
+/lib/systemd/system/{{ map.openvas_manager.service }}.service:
   file.managed:
-    - name: /lib/systemd/system/{{ map.openvas_manager.service }}.service
     - source: salt://openvas/files/openvas-manager.service
     - require: 
       - pkg: openvas-pkg
 
-  file.absent:
-    - name: /etc/init.d/{{ map.openvas_manager.service }}
+/etc/init.d/{{ map.openvas_manager.service }}:
+  file.absent
 
-scanner-service:
+/lib/systemd/system/{{ map.openvas_scanner.service }}.service:
   file.managed:
-    - name: /lib/systemd/system/{{ map.openvas_scanner.service }}.service
     - source: salt://openvas/files/openvas-scanner.service
     - require:
       - pkg: openvas-pkg
 
-  file.absent:
-    - name: /etc/init.d/{{ map.openvas_scanner.service }}
+/etc/init.d/{{ map.openvas_scanner.service }}:
+  file.absent
 
-gsa-service:
+/lib/systemd/system/{{ map.openvas_gsa.service }}.service:
   file.managed:
-    - name: /lib/systemd/system/{{ map.openvas_gsa.service }}.service
     - source: salt://openvas/files/openvas-gsa.service
     - require:
       - pkg: openvas-pkg
 
-  file.absent:
-    - name: /etc/init.d/{{ map.openvas_scanner.service }}
+/etc/init.d/{{ map.openvas_gsa.service }}:
+  file.absent
 {% endif %}
