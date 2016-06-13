@@ -10,8 +10,8 @@ install:
   # Copy these states
   - sudo mkdir -p /srv/salt
   - sudo cp -r . /srv/salt
+  - sudo cp .travis/top.sls /srv/salt
   - sudo cp .travis/minion /etc/salt/minion
-  - sudo cp .travis/top.sls .
   - sudo service salt-minion restart
 
   # Additional debug help
