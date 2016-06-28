@@ -16,6 +16,8 @@ manager-custom:
       - service: {{ map.openvas_manager.service }}
       - service: {{ map.openvas_scanner.service }}
       - service: {{ map.openvas_gsa.service }}
+    - require: 
+      - sls: openvas.install
 
 scanner-custom:
   file.managed:
@@ -30,6 +32,8 @@ scanner-custom:
       - service: {{ map.openvas_manager.service }}
       - service: {{ map.openvas_scanner.service }}
       - service: {{ map.openvas_gsa.service }}
+    - require: 
+       - sls: openvas.install
 
 gsa-custom:
   file.managed:
@@ -45,3 +49,5 @@ gsa-custom:
       - service: {{ map.openvas_manager.service }}
       - service: {{ map.openvas_scanner.service }}
       - service: {{ map.openvas_gsa.service }}
+    - require: 
+      - sls: openvas.install

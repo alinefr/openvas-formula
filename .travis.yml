@@ -8,10 +8,12 @@ before_install:
 
 install:
   # Copy these states
-  - sudo mkdir -p /srv/salt
+  - sudo mkdir -p /srv/{salt,pillar}
   - sudo cp -r . /srv/salt
-  - sudo cp .travis/top.sls /srv/salt
-  - sudo cp .travis/minion /etc/salt/minion
+  - sudo cp {.travis,/srv/salt}/top.sls
+  - sudo cp .travis/top_pillar.sls /srv/pillar/top.sls
+  - sudo cp pillar.example /srv/pillar/openvas.sls
+  - sudo cp {.travis,/etc/salt}/minion
   - sudo service salt-minion restart
 
   # Additional debug help
@@ -22,4 +24,4 @@ install:
   - sudo salt-call grains.items --local
 
 script:
-  - sudo salt-call state.show_highstate --local --retcode-passthrough
+  - sudo salt-call state.highstate --local --retcode-passthrough

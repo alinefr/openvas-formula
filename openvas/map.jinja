@@ -25,13 +25,13 @@
 %}
 
 {% set os_map = salt['grains.filter_by']({
+        'Ubuntu': {},
         'Kali': {
             'pkg': 'greenbone-security-assistant',
             'service': 'greenbone-security-assistant'
-        },
-        'Ubuntu': {},
-        'Debian': {},
+        }
     }
+    , grain="os"
     , merge=salt['pillar.get']('openvas_gsa:lookup'))
 %}
 

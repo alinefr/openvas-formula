@@ -1,9 +1,8 @@
-.. image:: https://travis-ci.org/alinefr/openvas-formula.svg?branch=master
+===========================
+openvas-formula |travis-ci|
+===========================
+.. |travis-ci| image:: https://travis-ci.org/alinefr/openvas-formula.svg?branch=master
     :target: https://travis-ci.org/alinefr/openvas-formula
-
-================
-openvas-formula
-================ 
 
 A saltstack formula for installing and configuring openvas.
 
@@ -22,3 +21,17 @@ Available states
 ------------
 
 Installs the openvas package, and starts the associated openvas service.
+
+``openvas.install``
+------------------
+
+Installs the openvas package.
+
+``openvas.config``
+------------------
+
+Apply custom configuration from pillar. Check `pillar.example`_ for usage.
+
+``openvas.service``
+
+Ensures openvas daemons are up and running.

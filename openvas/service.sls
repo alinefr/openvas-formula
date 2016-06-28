@@ -10,6 +10,8 @@ openvas-setup:
     - name: 'openvas-setup && openvasmd --user=admin --new-password={{ map.openvas_manager.password }}'
 {% endif %}
     - unless: 'test $(find {{ openvas_plugins }} -name "*nasl" | wc -l) -gt 10'
+    - require: 
+      - sls: openvas.config
 
 {{ map.openvas_manager.service }}:
   service.running:
@@ -26,6 +28,8 @@ openvas-setup:
 {% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
+    - require:
+      - cmd: openvas-setup
 
 {{ map.openvas_gsa.service }}:
   service.running:
@@ -33,3 +37,5 @@ openvas-setup:
 {% if grains['init'] == "systemd" %}
     - provider: systemd
 {% endif %}
+    - require:
+      - cmd: openvas-setup
