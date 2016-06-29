@@ -32,6 +32,8 @@ Installs the openvas package.
 
 Apply custom configuration from pillar. Check `pillar.example`_ for usage.
 
+.. _pillar.example: pillar.example
+
 ``openvas.service``
 
 Ensures openvas daemons are up and running.
